@@ -5,6 +5,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const connectDB = require("./config/database");
 const { connect } = require("mongoose");
+const errorHandler = require("./middlewares/error.Handler");
 
 const app = express();
 

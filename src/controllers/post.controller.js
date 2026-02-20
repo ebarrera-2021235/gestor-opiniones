@@ -8,7 +8,7 @@ const createPost = async (req, res) => {
             title,
             category,
             content,
-            author: req.user._id
+            author: req.user.id
         })
 
         await post.save()
@@ -16,7 +16,7 @@ const createPost = async (req, res) => {
         res.status(201).json(post)
 
     } catch (error) {
-        res.status(500).json({ msg: 'Server error' })
+        res.status(500).json({ msg: "Error en el servidor" })
     }
 }
 
@@ -37,7 +37,7 @@ const getPostById = async (req, res) => {
         .populate('author', 'username email')
 
     if (!post) {
-        return res.status(404).json({ msg: 'Post not found' })
+        return res.status(404).json({ msg: "Post no encontrado" })
     }
 
     res.json(post)
@@ -51,12 +51,12 @@ const updatePost = async (req, res) => {
     const post = await Post.findById(id)
 
     if (!post) {
-        return res.status(404).json({ msg: 'Post not found' })
+        return res.status(404).json({ msg: "Post no encontrado" })
     }
 
-    if (post.author.toString() !== req.user._id.toString()) {
+    if (post.author.toString() !== req.user.id.toString()) {
         return res.status(403).json({
-            msg: 'You are not the author of this post'
+            msg: "No eres el autor de esta publicación"
         })
     }
 
@@ -76,18 +76,18 @@ const deletePost = async (req, res) => {
     const post = await Post.findById(id)
 
     if (!post) {
-        return res.status(404).json({ msg: 'Post not found' })
+        return res.status(404).json({ msg: "Post no encontrado" })
     }
 
-    if (post.author.toString() !== req.user._id.toString()) {
+    if (post.author.toString() !== req.user.id.toString()) {
         return res.status(403).json({
-            msg: 'You are not the author of this post'
+            msg: "No eres el autor de esta publicación"
         })
     }
 
     await post.deleteOne()
 
-    res.json({ msg: 'Post deleted successfully' })
+    res.json({ msg: 'Post eliminado exitosamente' })
 }
 
 module.exports = {
